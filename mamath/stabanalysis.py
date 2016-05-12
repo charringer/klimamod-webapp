@@ -8,6 +8,9 @@ def plot_stability(f):
     x = np.linspace(0.96,1.30,20)
     y = np.linspace(200,320,20)
 
+    ax.set_xlim(x[0], x[-1])
+    ax.set_ylim(y[0], y[-1])
+
     partplot_quiver(ax, f, x, y)
     partplot_root(ax, f, x, y, 'm-')
     ax.grid()
@@ -19,6 +22,9 @@ def plot_comparison(models):
 
     x = np.linspace(0.96,1.30,20)
     y = np.linspace(200,320,20)
+
+    ax.set_xlim(x[0], x[-1])
+    ax.set_ylim(y[0], y[-1])
 
     for model in models:
         f = model.get_f_with_Qfactor()
@@ -37,9 +43,15 @@ def partplot_quiver(ax, f, x, y):
     ax.quiver(X1, Y1, DX1, DY1, M, pivot='mid')
 
 def partplot_root(ax, f, x, y, *plot_args, **plot_kwargs):
-    root_y_begin = max(y[ 0], optimize.newton(lambda T: f(T, x[ 0]), 100) + 1E-9)
-    root_y_end   = min(y[-1], optimize.newton(lambda T: f(T, x[-1]), 100) - 1E-9)
-    root_y = np.linspace(root_y_begin, root_y_end, 800) 
-    root_x = vectorize(lambda T: optimize.brentq(lambda Qf: f(T, Qf), x[0], x[-1]))(root_y)
+    yy = np.linspace(y[0], y[-1], 400)
+    xx = vectorize(lambda T: nan_on_error(lambda: optimize.brentq(lambda Qf: f(T, Qf), x[0], x[-1])))(yy)
+    ax.plot(xx, yy, *plot_args, **plot_kwargs)
 
-    ax.plot(root_x, root_y, *plot_args, **plot_kwargs)
+def nan_on_error(calculation):
+    try:
+        result = calculation()
+        return result
+    except ValueError:
+        return np.nan
+    except RuntimeError:
+        return np.nan
