@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from bottle import route, view, run, static_file, request
-from helper.linkhelper import perm_params
+from bottle import route, view, run, static_file, request, redirect
+from helper.linkhelper import perm_params, make_url
 from helper.plothelper import svg_plot
 from mamath.euler import plot_euler
 from mamath.stabanalysis import plot_stability, plot_comparison
@@ -14,8 +14,15 @@ def overview():
     return dict(url_params=pp)
 
 @route('/run/<modelid>')
+@view('preparesimulation')
 def preparesimulation(modelid):
-    pass
+    pp = perm_params(request.query)
+    model = Model(modelid, pp)
+    initval = request.query.get('initval')
+    if initval:
+        redirect(make_url('/run/'+modelid+'/'+initval, pp))
+    else:
+        return dict(model=model, url_params=pp)
 
 @route('/run/<modelid>/<initval:float>')
 @view('runsimulation')

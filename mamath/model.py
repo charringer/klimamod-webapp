@@ -16,6 +16,7 @@ class Model(object):
         self.set_params(params)
 
     def set_model(self, modelid):
+        self.modelid = modelid
         if modelid == 'fraedrich':
             self.name = 'Fraedrich'
             self.f = self.__f_fraedrich

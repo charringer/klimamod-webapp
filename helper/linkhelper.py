@@ -2,12 +2,14 @@ from bottle import template
 from mamath.model import Model
 
 def link(href, name, url_params={}):
+    return template("<a href=\"{{!href}}\">{{name}}</a>",
+                    href=make_url(href, url_params), name=name)
+
+def make_url(href, url_params={}):
     paramstr = "&".join([key+"="+val for key, val in url_params.items()])
     if paramstr:
         paramstr = "?" + paramstr
-    return template(
-        "<a href=\"{{!href}}\">{{name}}</a>",
-        href=href+paramstr, name=name)
+    return href + paramstr
 
 def perm_params(params, report_bad_values = False):
     pp = {}
