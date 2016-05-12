@@ -17,8 +17,11 @@
 
 <h3>Tweak parameters</h3>
 <form action="/tweakparams" method="GET">
-  epsilon:<br />
-  <input type="text" name="var_epsilon" value="" style="width: 6em;" /><br />
+% from mamath.model import Model
+% for var in Model.param_keys:
+  {{var}}:<br />
+  <input type="text" name="{{var}}" value="" style="width: 6em;" /><br />
+% end
   <input type="hidden" name="taction" value="update" />
   <input type="submit" value="Update values" />
 </form>

@@ -17,7 +17,7 @@ def plot_euler(f, iv):
     time = 10
 
     x = np.linspace(0, time, time*numstepspertime+1)
-    y = euler(lambda T: f(T, 1), iv, numsteps, time*numstepspertime)
+    y = euler(f, iv, numsteps, time*numstepspertime)
     ax.plot(x, y, 'r-')
 
     ax.set_title("dynamics in time")

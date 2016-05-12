@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import optimize, vectorize
 
-def sys(f, x):
-    return np.array([ f(x[0], x[1]), 0 * x[1] ])
-
 def plot_stability(f):
     fig, ax = plt.subplots()
 
@@ -12,20 +9,22 @@ def plot_stability(f):
     y = np.linspace(200,320,20)
 
     partplot_quiver(ax, f, x, y)
-    partplot_root(ax, f, x, y, 'g-')
+    partplot_root(ax, f, x, y, 'm-')
     ax.grid()
 
     return fig
 
-def plot_comparison(functions):
+def plot_comparison(models):
     fig, ax = plt.subplots()
 
     x = np.linspace(0.96,1.30,20)
     y = np.linspace(200,320,20)
 
-    styles = ['g-', 'b-', 'm-', 'r-', 'y-']
-    for (f, label), style in zip(functions, styles):
-        partplot_root(ax, f, x, y, 'g-', label=label)
+    for model in models:
+        f = model.get_f_with_Qfactor()
+        partplot_root(ax, f, x, y, label=model.name)
+
+    ax.legend(loc='best')
 
     return fig
 

@@ -5,7 +5,7 @@ from helper.linkhelper import perm_params
 from helper.plothelper import svg_plot
 from mamath.euler import plot_euler
 from mamath.stabanalysis import plot_stability, plot_comparison
-from mamath.models import f_fraedrich, f_griffeldrazin
+from mamath.model import Model
 
 @route('/')
 @view('overview')
@@ -13,45 +13,34 @@ def overview():
     pp = perm_params(request.query)
     return dict(url_params=pp)
 
-@route('/run/<model>')
-def preparesimulation(model):
+@route('/run/<modelid>')
+def preparesimulation(modelid):
     pass
 
-@route('/run/<model>/<initval:float>')
+@route('/run/<modelid>/<initval:float>')
 @view('runsimulation')
-def runsimulation(model, initval):
-    if model == 'fraedrich':
-        f = f_fraedrich
-    elif model == 'griffeldrazin':
-        f = f_griffeldrazin
-    else:
-        raise ValueError("unknown model: %s" % model)
-    initval = float(initval)
-    plot = svg_plot(plot_euler(f, initval))
-
+def runsimulation(modelid, initval):
     pp = perm_params(request.query)
+    model = Model(modelid, pp)
+    initval = float(initval)
+    plot = svg_plot(plot_euler(model.get_f(), initval))
     return dict(plot=plot, url_params=pp)
 
-@route('/stabanalysis/<model>')
+@route('/stabanalysis/<modelid>')
 @view('stabanalysis')
-def stabanalysis(model):
-    if model == 'fraedrich':
-        f = f_fraedrich
-    elif model == 'griffeldrazin':
-        f = f_griffeldrazin
-    else:
-        raise ValueError("unknown model: %s" % model)
-    plot = svg_plot(plot_stability(f))
+def stabanalysis(modelid):
     pp = perm_params(request.query)
+    model = Model(modelid, pp)
+    plot = svg_plot(plot_stability(model.get_f_with_Qfactor()))
     return dict(plot=plot, url_params=pp)
 
 @route('/comparison')
 @view('stabanalysis')
 def comparison():
-    plot = svg_plot(plot_comparison(
-                        [(f_fraedrich, "Fraedrich")
-                        ,(f_griffeldrazin, "Griffel & Drazin")]))
     pp = perm_params(request.query)
+    model_f  = Model('fraedrich', pp)
+    model_gd = Model('griffeldrazin', pp)
+    plot = svg_plot(plot_comparison([model_f, model_gd]))
     return dict(plot=plot, url_params=pp)
 
 @route('/tweakparams')
