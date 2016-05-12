@@ -1,4 +1,4 @@
-% rebase('base.tpl', title='Simulation of '+model.name)
+% rebase('base.tpl', title='Numerical simulation of '+model.name+'\'s model')
 
 <form action="/run/{{model.modelid}}" method="GET">
   <p>

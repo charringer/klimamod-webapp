@@ -31,7 +31,7 @@ def runsimulation(modelid, initval):
     model = Model(modelid, pp)
     initval = float(initval)
     plot = svg_plot(plot_euler(model.get_f(), initval))
-    return dict(plot=plot, url_params=pp)
+    return dict(plot=plot, model=model, url_params=pp)
 
 @route('/stabanalysis/<modelid>')
 @view('stabanalysis')
@@ -39,10 +39,10 @@ def stabanalysis(modelid):
     pp = perm_params(request.query)
     model = Model(modelid, pp)
     plot = svg_plot(plot_stability(model.get_f_with_Qfactor()))
-    return dict(plot=plot, url_params=pp)
+    return dict(plot=plot, model=model, url_params=pp)
 
 @route('/comparison')
-@view('stabanalysis')
+@view('comparison')
 def comparison():
     pp = perm_params(request.query)
     model_f  = Model('fraedrich', pp)
