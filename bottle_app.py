@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from bottle import route, view, run, static_file, request, redirect
+from bottle import route, view, request, static_file, redirect, run,default_app
 from helper.linkhelper import perm_params, make_url
 from helper.plothelper import svg_plot
 from mamath.euler import plot_euler
@@ -61,4 +61,7 @@ def tweakparams():
 def serve_static_file(path):
     return static_file(path, root="static")
 
-run(host='localhost', port=8080, debug=True)
+application = default_app()
+
+if __name__ == "__main__":
+    run(host='localhost', port=8080, debug=True)
