@@ -3,9 +3,9 @@
 from bottle import route, view, request, static_file, redirect, run,default_app
 from helper.linkhelper import perm_params, make_url
 from helper.plothelper import svg_plot
-from mamath.euler import plot_euler
-from mamath.stabanalysis import plot_stability, plot_comparison
-from mamath.model import Model
+from climath.euler import plot_euler
+from climath.stabanalysis import plot_stability, plot_comparison
+from climath.model import Model
 
 @route('/')
 @view('overview')

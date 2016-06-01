@@ -1,5 +1,5 @@
 from bottle import template
-from mamath.model import Model
+from climath.model import Model
 
 def link(href, name, url_params={}):
     return template("<a href=\"{{!href}}\">{{name}}</a>",

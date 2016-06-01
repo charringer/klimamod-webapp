@@ -17,7 +17,7 @@
 
 <h3>Tweak parameters</h3>
 <form action="/tweakparams" method="GET">
-% from mamath.model import Model
+% from climath.model import Model
 % for var in Model.param_keys:
   {{var}}:<br />
   <input type="text" name="{{var}}" value="" style="width: 6em;" /><br />
