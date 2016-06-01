@@ -20,7 +20,7 @@ menu_code = \
         'name':  "Griffel & Drazin",
         'route': "/stabanalysis/griffeldrazin",
     },{
-        'name':  "Comparsion",
+        'name':  "Comparison",
         'route': "/comparison",
     }],
 },{
