@@ -1,5 +1,5 @@
 % rebase('base.tpl', title='Numerical simulation of '+model.name+'\'s model')
 
-<p>Here we go:</p>
+<p>We simulate our model by using Euler's method.</p>
 
 {{!plot}}

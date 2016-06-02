@@ -1,17 +1,20 @@
 % rebase('base.tpl', title='Tweak parameters')
 
-<p>*tear*, *clinch*...</p>
+<p>Here we may tweak some parameters of the models.</p>
+
+<p>Note that the default values are not displayed. Tweaked values are only
+displayed and temporarily saved as URL parameters.</p>
 
 % if taction == 'update':
 %   if not bad_values:
 <p>Parameters updated successfully.</p>
 %   else:
-<p>Shit happened.</p>
+<p>An error happened.</p>
 <pre>{{bad_values}}</pre>
 %   end
 
 % elif taction == 'reset':
-<p>Parameters are reset.</p>
+<p>Parameters are reset to default values.</p>
 
 %end
 
