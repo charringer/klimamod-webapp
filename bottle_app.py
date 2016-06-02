@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 from bottle import route, view, request, static_file, redirect, run,default_app
+from bottle import Response
 from helper.linkhelper import perm_params, make_url
-from helper.plothelper import svg_plot
+from helper.plothelper import svg_plot, headerless_svg, downloadable_svg
 from climath.euler import plot_euler
 from climath.stabanalysis import plot_stability, plot_comparison
 from climath.model import Model
@@ -35,7 +36,15 @@ def runsimulation(modelid, initval):
     initval = float(initval)
     simtime = int(application.config['plot.simulation_time'])
     plot = svg_plot(plot_euler(model.get_f(), initval, simtime))
-    return dict(plot=plot, model=model, url_params=pp)
+    if 'dl' in request.query:
+        return Response(body=downloadable_svg(plot))
+        ## somehow these headers get ignored: :-(
+        #headers=[
+        #  ('Content-Type', 'image/svg+xml'),
+        #  ('Content-Disposition', 'attachment; filename="plot.svg"'),
+        #])
+    else:
+        return dict(plot=headerless_svg(plot), model=model, url_params=pp)
 
 @route('/stabanalysis/<modelid>')
 @view('stabanalysis')
@@ -43,7 +52,10 @@ def stabanalysis(modelid):
     pp = perm_params(request.query)
     model = Model(modelid, pp)
     plot = svg_plot(plot_stability(model.get_f_with_Qfactor()))
-    return dict(plot=plot, model=model, url_params=pp)
+    if 'dl' in request.query:
+        return Response(body=downloadable_svg(plot))
+    else:
+        return dict(plot=headerless_svg(plot), model=model, url_params=pp)
 
 @route('/comparison')
 @view('comparison')
@@ -52,7 +64,10 @@ def comparison():
     model_f  = Model('fraedrich', pp)
     model_gd = Model('griffeldrazin', pp)
     plot = svg_plot(plot_comparison([model_f, model_gd]))
-    return dict(plot=plot, url_params=pp)
+    if 'dl' in request.query:
+        return Response(body=downloadable_svg(plot))
+    else:
+        return dict(plot=headerless_svg(plot), url_params=pp)
 
 @route('/tweakparams')
 @view('tweakparams')

@@ -65,7 +65,7 @@ class Model(object):
     def __f_griffeldrazin(self, T, Qfactor):
         var_T = T
         var_Q = 340.0 * Qfactor
-        var_mu = self.params['var_mu']
+        var_mu = self.params['mu']
 
         var_I = 1367
         var_T0 = 284.15
