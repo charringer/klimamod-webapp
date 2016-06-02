@@ -11,9 +11,15 @@ def plot_stability(f):
     ax.set_xlim(x[0], x[-1])
     ax.set_ylim(y[0], y[-1])
 
+    ax.grid()
+    ax.axvline(1.0, color='k', linestyle='--')
+
     partplot_quiver(ax, f, x, y)
     partplot_root(ax, f, x, y, 'm-')
-    ax.grid()
+
+    ax.set_title("stability analysis")
+    ax.set_xlabel("solar radiation / 340 W/m^2")
+    ax.set_ylabel("temperature / 1 K")
 
     return fig
 
@@ -26,11 +32,17 @@ def plot_comparison(models):
     ax.set_xlim(x[0], x[-1])
     ax.set_ylim(y[0], y[-1])
 
+    ax.grid()
+    ax.axvline(1.0, color='k', linestyle='--')
+
     for model in models:
         f = model.get_f_with_Qfactor()
         partplot_root(ax, f, x, y, label=model.name)
 
     ax.legend(loc='best')
+    ax.set_title("stability analysis")
+    ax.set_xlabel("solar radiation / 340 W/m^2")
+    ax.set_ylabel("temperature / 1 K")
 
     return fig
 
