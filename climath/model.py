@@ -2,9 +2,8 @@ import numpy as np
 
 class Model(object):
     default_params = {
-        'var_epsilon': 0.69,
-        'var_Q': 340.0,
-        'var_mu': 1.0,
+        'epsilon': 0.69,
+        'mu': 1.0,
     }
 
     param_keys = default_params.keys()
@@ -41,9 +40,9 @@ class Model(object):
 
     def __f_fraedrich(self, T, Qfactor):
         var_T = T
-        var_Q = self.params['var_Q'] * Qfactor
-        var_epsilon = self.params['var_epsilon']
-        var_mu = self.params['var_mu']
+        var_Q = 340.0 * Qfactor
+        var_epsilon = self.params['epsilon']
+        var_mu = self.params['mu']
 
         var_sigma = 5.67E-8
         var_a = 2.8
@@ -65,7 +64,7 @@ class Model(object):
 
     def __f_griffeldrazin(self, T, Qfactor):
         var_T = T
-        var_Q = self.params['var_Q'] * Qfactor
+        var_Q = 340.0 * Qfactor
         var_mu = self.params['var_mu']
 
         var_I = 1367
