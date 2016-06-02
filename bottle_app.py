@@ -8,9 +8,6 @@ from climath.euler import plot_euler
 from climath.stabanalysis import plot_stability, plot_comparison
 from climath.model import Model
 
-application = default_app()
-application.config.load_config("config.ini")
-
 @route('/')
 @view('overview')
 def overview():
@@ -34,8 +31,7 @@ def runsimulation(modelid, initval):
     pp = perm_params(request.query)
     model = Model(modelid, pp)
     initval = float(initval)
-    simtime = int(application.config['plot.simulation_time'])
-    plot = svg_plot(plot_euler(model.get_f(), initval, simtime))
+    plot = svg_plot(plot_euler(model.get_f(), initval, 100))
     if 'dl' in request.query:
         return Response(body=downloadable_svg(plot))
         ## somehow these headers get ignored: :-(
@@ -79,6 +75,8 @@ def tweakparams():
 @route('/static/<path:path>')
 def serve_static_file(path):
     return static_file(path, root="static")
+
+application = default_app()
 
 if __name__ == "__main__":
     run(host='localhost', port=8080, debug=True)
